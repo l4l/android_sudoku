@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Main names -->
+    <string name="app_name">Sudoku Awesome Game</string>
+
+    <!-- Button names -->
+    <string name="continueBtn">Continue</string>
+    <string name="newGameBtn">New Game</string>
+    <string name="authorBtn">Author</string>
+    <string name="recordsBtn">Top 10</string>
+    <string name="checkBtn">Check</string>
+    <string name="clearBtn">Clear</string>
+
+    <!-- Text fields -->
+    <string name="author">Author</string>
+    <string name="authorValue">Minibaev Evgeny</string>
+    <string name="contacts">Contacts</string>
+    <string name="contactsValue">mail@kitsu.me</string>
+    <string name="textSeparator">&#160;:&#160;&#160;</string>
+    <string name="generateBtn">Generate</string>
+
+    <!-- Java code consts -->
+    <string name="gridKey">grid</string>
+</resources>

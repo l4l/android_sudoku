@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:gravity="center_horizontal"
+        android:textSize="40sp"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="180dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_vertical">
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/continueBtn"
+            android:id="@+id/buttonContinue"
+            android:layout_gravity="center_horizontal"
+            android:enabled="false"
+            android:onClick="continueClick"/>
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/newGameBtn"
+            android:id="@+id/buttonNewGame"
+            android:layout_gravity="center_horizontal"
+            android:onClick="newGameClick"/>
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/recordsBtn"
+            android:id="@+id/buttonRecords"
+            android:layout_gravity="center_horizontal"
+            android:onClick="recordsClick"/>
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/authorBtn"
+            android:id="@+id/buttonAuthor"
+            android:layout_gravity="center_horizontal"
+            android:onClick="authorClick"/>
+    </LinearLayout>
+
+</LinearLayout>
+
