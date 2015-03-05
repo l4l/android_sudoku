@@ -2,7 +2,10 @@ package org.sudoku;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.GridView;
+import android.widget.Toast;
 import org.sudoku.adapters.CellsAdapter;
 
 /**
@@ -27,12 +30,36 @@ public class GameActivity extends Activity {
             for (int i = 0; i < LINE_SIZE_S; i++)
                 mask[i] = CellMask.values()[m[i]];
         grid.setNumColumns(LINE_SIZE);
-        grid.setAdapter(new CellsAdapter(
-                        this,
-                        getIntent().getIntArrayExtra("grid"),
-                        mask));
+        final CellsAdapter adapter = new CellsAdapter(
+                this,
+                getIntent().getIntArrayExtra("grid"),
+                mask);
+        grid.setAdapter(adapter);
 
+        Button checkBtn = (Button) findViewById(R.id.btnCheck);
+        Button clearBtn = (Button) findViewById(R.id.btnClear);
+        Button genBtn = (Button) findViewById(R.id.btnGenerate);
 
+        checkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String text = adapter.checkCells() ? "Wrong": "Correct";
+                Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+            }
+        });
+        clearBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adapter.clearAnswers();
+            }
+        });
+        genBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adapter.generateGrid();
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
 

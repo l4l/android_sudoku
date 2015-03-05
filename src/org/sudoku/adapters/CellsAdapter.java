@@ -22,26 +22,37 @@ import static org.sudoku.GameActivity.LINE_SIZE_S;
  */
 public class CellsAdapter extends BaseAdapter {
 
+    private static final int[][] base = new int[][]{
+            {1,2,3,4,5,6,7,8,9},
+            {4,5,6,7,8,9,1,2,3},
+            {7,8,9,1,2,3,4,5,6},
+            {2,3,4,5,6,7,8,9,1},
+            {5,6,7,8,9,1,2,3,4},
+            {8,9,1,2,3,4,5,6,7},
+            {3,4,5,6,7,8,9,1,2},
+            {6,7,8,9,1,2,3,4,5},
+            {9,1,2,3,4,5,6,7,8}
+    };
+
     Context context;
     private int[] cells;
     private CellMask[] mask;
     private SparseIntArray defined;
+    private static final int CLOSED_CELLS = 40;
 
     public CellsAdapter(Context context, int[] cells, CellMask[] mask) {
         this.context = context;
         this.cells = cells;
+        defined = new SparseIntArray();
         if (this.cells == null || this.cells.length != LINE_SIZE_S) {
             this.cells = new int[LINE_SIZE_S];
             generateGrid();
+        } else {
+            this.mask = mask;
+            if (this.mask == null || this.mask[0] == null || this.mask.length != LINE_SIZE_S) {
+                generateMask();
+            }
         }
-        this.mask = mask;
-        if (this.mask == null || this.mask.length != LINE_SIZE_S)
-            this.mask = new CellMask[LINE_SIZE_S];
-        for (int i = 0; i < LINE_SIZE_S; i++) {
-            mask[i] = CellMask.SHOWED;
-        }
-        //TODO: hideCells();
-        defined = new SparseIntArray();
     }
 
     @Override
@@ -111,65 +122,138 @@ public class CellsAdapter extends BaseAdapter {
         }
     }
 
-    public void generateGrid() {
-        int u;
-        int len = LINE_SIZE_S;
-        int[] used = new int[len];
-        for(int i = 0; i < len; i++) {
-            do {
+    private void generateMask() {
 
-                do {
-                    u = 0;
-                    if(used[i] == 511) {
-                        used[i] |= 1<<cells[i]-1;
-                        used[i] = 0;
-                        cells[i] = 0;
-                        i -= 2;
-                        u = 1;
-                        break;
-                    }
-                    cells[i] = 1 + (int)(Math.random()*9);
-                } while((used[i] & 1<<cells[i]-1) > 0);
-                if(u == 0)
-                    break;
-            } while(!checkCell(i) && (used[i] |= 1<<cells[i]-1) != -1);
+        mask = new CellMask[LINE_SIZE_S];
+        for (int i = 0; i < LINE_SIZE_S; i++)
+            mask[i] = CellMask.SHOWED;
+
+        Vector<Integer> a = new Vector<Integer>(81);
+        for (int i = 0; i < LINE_SIZE_S; i++)
+            a.add(i);
+
+        int t;
+        for (int i = 0; i < CLOSED_CELLS; i++) {
+            t = (int)(Math.random() * a.size());
+            mask[t] = CellMask.HIDDEN;
+            a.remove(t);
         }
     }
 
-    public void checkGrid(View view) {
-        Vector<Integer> p = new Vector<Integer>();
-        for (int i = 0; i < LINE_SIZE_S; i++) {
-            if (checkCell(i))
-                p.add(i);
+    public void generateGrid() {
+        clearAnswers();
+        for (int i = 0; i < LINE_SIZE; i++)
+            System.arraycopy(base[i], 0, cells, i * 9, LINE_SIZE);
+        for (int i = (int)(Math.random()*10)+100; i > 0; i--) {
+            int t = (int)(Math.random()*3);
+            int x = (int)(Math.random()*3);
+            int y; do {y = (int)(Math.random()*3);} while (y == x);
+            int z = (int)(Math.random()*3);
+            /*{
+                Log.i("Random nums", t + " " + x + " " + y + " " + z);
+                int[] tmp = new int[LINE_SIZE];
+                Log.i("Array", "####################################");
+                for (int j = 0; j < LINE_SIZE; j++) {
+                    System.arraycopy(cells, j * LINE_SIZE, tmp, 0, LINE_SIZE);
+                    Log.i("Array", Arrays.toString(tmp));
+                }
+                Log.i("Array", "####################################");
+            }*/
+            switch (t) {
+                case 0:
+                    transpose(x + y + z);
+                    break;
+                case 1:
+                    swapRows(z*3 + x, z*3 + y);
+                    break;
+                case 2:
+                    swapColumns(z*3 + x, z*3 + y);
+                    break;
+                case 3:
+                    swapRowBlock(x, y);
+                    break;
+                case 4:
+                    swapColumnBlock(x, y);
+                    break;
+            }
         }
+        generateMask();
+    }
 
-        if (p.size() != 0) {
-            // TODO: color wrong cells
+    private void transpose(int n) {
+        if (n % 2 == 0)
+            for (int i = 0; i < LINE_SIZE; i++)
+                for (int j = i; j < LINE_SIZE; j++) {
+                    int l = i*LINE_SIZE + j;
+                    int k = j*LINE_SIZE + i;
+                    int t = cells[l];
+                    cells[l] = cells[k];
+                    cells[k] = t;
+                }
+        else
+            for (int i = 0; i < LINE_SIZE; i++)
+                for (int j = LINE_SIZE - i - 1; j >= 0; j--) {
+                    int l = i*LINE_SIZE + j;
+                    int k = (LINE_SIZE - j - 1)*LINE_SIZE + (LINE_SIZE - i - 1);
+                    int t = cells[l];
+                    cells[l] = cells[k];
+                    cells[k] = t;
+                }
+    }
+
+    private void swapRows(int r1, int r2) {
+        for (int i = 0; i < LINE_SIZE; i++) {
+            int l = r1*LINE_SIZE + i;
+            int k = r2*LINE_SIZE + i;
+            int t = cells[l];
+            cells[l] = cells[k];
+            cells[k] = t;
         }
+    }
+
+    private void swapColumns(int c1, int c2) {
+        for (int i = 0; i < LINE_SIZE; i++) {
+            int l = i*LINE_SIZE + c1;
+            int k = i*LINE_SIZE + c2;
+            int t = cells[l];
+            cells[l] = cells[k];
+            cells[k] = t;
+        }
+    }
+
+    private void swapRowBlock(int r1, int r2) {
+        //TODO
+    }
+
+    private void swapColumnBlock(int c1, int c2) {
+        //TODO
     }
 
     /**
      * @return if has error(s) true, else false
      */
-    private boolean checkCells() {
+    public boolean checkCells() {
         for (int i = 0; i < LINE_SIZE_S; i++) {
-                if (checkCell(i))
-                    return true;
+            int t = defined.get(i, -1);
+            if (t != -1 && t != cells[i])
+                return true;
         }
         return false;
     }
 
+    public void clearAnswers() {
+        defined.clear();
+    }
+
+    @Deprecated
     private boolean checkCell(int i) {
         for (int k = 1; k < LINE_SIZE; k++)
-            if (cells[i] == cells[(i + k*LINE_SIZE) % LINE_SIZE_S]) {
-
+            if (cells[i] == cells[(i + k*LINE_SIZE) % LINE_SIZE_S])
                 return true;
-            }
         for (int k = i % LINE_SIZE + 1; k != i % LINE_SIZE; k++)
 
-            if (cells[i] == cells[i/9 < (i + k)/9 ? i + k - LINE_SIZE: i + k]) {
+            if (cells[i] == cells[i/9 < (i + k)/9 ? i + k - LINE_SIZE: i + k])
                 return true;
-            }
 
         for (int k: getBlock(i))
             if (cells[i] == cells[k])
@@ -178,6 +262,7 @@ public class CellsAdapter extends BaseAdapter {
         return false;
     }
 
+    @Deprecated
     private int[] getBlock(int i) {
         int block[] = new int[8];
         int xStart = 0, yStart = 0, xEnd, yEnd;
@@ -204,6 +289,7 @@ public class CellsAdapter extends BaseAdapter {
         * {0,1,2,   9,10,11,    18,19,20}
         * {3,4,5,   12,13,14,   21,22,23}
         * {6,7,8,   15,16,17,   24,25,26}
+        *
         * {27,28,29 36,37,38,   45,46,47}
         * */
 
