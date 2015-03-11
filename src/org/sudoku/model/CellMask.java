@@ -1,4 +1,4 @@
-package org.sudoku;
+package org.sudoku.model;
 
 /**
  * Created by kitsu.

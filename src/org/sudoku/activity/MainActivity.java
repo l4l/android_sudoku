@@ -1,10 +1,12 @@
-package org.sudoku;
+package org.sudoku.activity;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import org.sudoku.R;
 
 /**
  * Created by kitsu.
@@ -18,11 +20,10 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main);
     }
 
-
     public void continueClick(View view) {
         Intent i = new Intent();
         i.setClass(this, GameActivity.class);
-        i.putExtra("", new byte[81]);
+        i.putExtra("", new byte[GameActivity.LINE_SIZE_S]);
         startActivity(i);
     }
 

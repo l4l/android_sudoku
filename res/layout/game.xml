@@ -14,7 +14,7 @@
         android:id="@+id/grid"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:stretchMode="columnWidth"/>
+        android:numColumns="9"/>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -26,8 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/checkBtn"
-            android:id="@+id/btnCheck"
-            />
+            android:id="@+id/btnCheck"/>
 
         <Button
             android:layout_width="wrap_content"
@@ -39,8 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/generateBtn"
-            android:id="@+id/btnGenerate"
-            />
+            android:id="@+id/btnGenerate"/>
 
     </LinearLayout>
 
