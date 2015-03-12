@@ -13,16 +13,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/celltxt"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:textColor="#000"
+            android:background="@android:color/darker_gray"
+            android:textStyle="bold"
+            android:textSize="@dimen/fontCellSize"/>
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/cellSize"
+            android:layout_height="match_parent"
             android:id="@+id/rightborder"/>
     </LinearLayout>
 
     <ImageView
-        android:layout_width="@dimen/cellSize"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/bottomborder"/>
 

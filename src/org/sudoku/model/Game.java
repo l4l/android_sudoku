@@ -55,6 +55,7 @@ public class Game {
         if (cell < 0 || cell >= LINE_SIZE_S || value < 0 || value >= LINE_SIZE)
             return;
         defined.put(cell, value + 1);
+        mask[cell] = CellMask.USER_DEFINED;
     }
 
     /**
@@ -195,11 +196,9 @@ public class Game {
      * @return if has error(s) true, else false
      */
     public boolean checkCells() {
-        for (int i = 0; i < LINE_SIZE_S; i++) {
-            int t = defined.get(i, -1);
-            if (t != -1 && t != cells[i])
+        for (int i = 0; i < LINE_SIZE_S; i++)
+            if (checkCell(i))
                 return true;
-        }
         return false;
     }
 
@@ -209,13 +208,17 @@ public class Game {
      * @return true if wrong, else correct
      */
     public boolean checkCell(int i) {
-         return defined.get(i, -1) != cells[i];
+         return defined.get(i, cells[i]) != cells[i];
     }
 
     /**
      * Just clear all user-defined cells
      */
     public void clearAnswers() {
-        defined.clear();
+        while (defined.size() > 0) {
+            int key = defined.keyAt(0);
+            defined.removeAt(0);
+            mask[key] = CellMask.HIDDEN;
+        }
     }
 }

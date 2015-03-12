@@ -10,7 +10,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import org.sudoku.R;
-import org.sudoku.adapter.CellsAdapter;
+import org.sudoku.adapter.SimpleCallback;
 
 import static org.sudoku.activity.GameActivity.LINE_SIZE;
 
@@ -20,9 +20,7 @@ import static org.sudoku.activity.GameActivity.LINE_SIZE;
  */
 public class KeypadDialog extends Dialog {
 
-    private int cell = -1;
-
-    public KeypadDialog(final Context context, final CellsAdapter.Callback callback) {
+    public KeypadDialog(final Context context, final SimpleCallback callback) {
         super(context);
         setCanceledOnTouchOutside(true);
         GridView view = (GridView)(((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.keypad, null));
@@ -57,7 +55,7 @@ public class KeypadDialog extends Dialog {
                     view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            callback.deed(cell, i);
+                            callback.deed(i);
                             dismiss();
                         }
                     });
@@ -67,8 +65,4 @@ public class KeypadDialog extends Dialog {
         });
     }
 
-    public void setCell(int i) {
-        if (cell == -1)
-            cell = i;
-    }
 }

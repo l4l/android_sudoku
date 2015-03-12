@@ -47,7 +47,7 @@ public class GameActivity extends Activity {
                     adapter.setUnclicked();
                 } else
                     text = "Correct";
-
+                adapter.notifyDataSetChanged();
                 Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
             }
         });
@@ -55,6 +55,7 @@ public class GameActivity extends Activity {
             @Override
             public void onClick(View view) {
                 game.clearAnswers();
+                adapter.notifyDataSetChanged();
             }
         });
         genBtn.setOnClickListener(new View.OnClickListener() {

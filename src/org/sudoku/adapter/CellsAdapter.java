@@ -2,6 +2,7 @@ package org.sudoku.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,10 +29,6 @@ public class CellsAdapter extends BaseAdapter {
     private Game game;
 
     private boolean clicked = true;
-
-    public static interface Callback {
-        public void deed(int a, int b);
-    }
 
     public CellsAdapter(Context context, Game game) {
         this.context = context;
@@ -70,15 +67,15 @@ public class CellsAdapter extends BaseAdapter {
                     @Override
                     public void onClick(View view) {
                         clicked = true;
-                        final KeypadDialog dialog = new KeypadDialog(context, new Callback() {
+                        final KeypadDialog dialog = new KeypadDialog(context, new SimpleCallback() {
                             @Override
-                            public void deed(int a, int b) {
-                                game.define(a, b);
+                            public void deed(int a) {
+                                game.define(t, a);
+                                closure.notifyDataSetChanged();
+                                Log.i("Values defining", t + " " + a);
                             }
                         });
-                        dialog.setCell(t);
                         dialog.show();
-                        closure.notifyDataSetChanged();
                     }
                 });
 
@@ -102,6 +99,8 @@ public class CellsAdapter extends BaseAdapter {
         } else
             if (!clicked && game.checkCell(i))
                 view.setBackgroundColor(Color.RED);
+            else
+                view.setBackgroundColor(Color.WHITE);
 
         TextView textView = (TextView) view
                 .findViewById(R.id.celltxt);
