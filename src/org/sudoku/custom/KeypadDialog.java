@@ -23,7 +23,9 @@ public class KeypadDialog extends Dialog {
     public KeypadDialog(final Context context, final SimpleCallback callback) {
         super(context);
         setCanceledOnTouchOutside(true);
-        GridView view = (GridView)(((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.keypad, null));
+        GridView view = (GridView)(((LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+                .inflate(R.layout.keypad, null));
         setContentView(view);
         view.setNumColumns(LINE_SIZE/3);
         view.setAdapter(new BaseAdapter() {

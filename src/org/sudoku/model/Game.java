@@ -30,14 +30,12 @@ public class Game {
     private int[] cells;
     private CellMask[] mask;
     private SparseIntArray defined;
+
+    private int stillOpened = CLOSED_CELLS;
     /**
      * How much cells hide at the beginning
      */
     public static final int CLOSED_CELLS = 40;
-
-    public Game() {
-        this(null, null ,null);
-    }
 
     public Game(int[] cells, CellMask[] mask, SparseIntArray defined) {
         this.cells = cells;
@@ -51,11 +49,12 @@ public class Game {
         }
     }
 
-    public void define(int cell, int value) {
+    public boolean define(int cell, int value) {
         if (cell < 0 || cell >= LINE_SIZE_S || value < 0 || value >= LINE_SIZE)
-            return;
+            return false;
         defined.put(cell, value + 1);
         mask[cell] = CellMask.USER_DEFINED;
+        return --stillOpened == 0;
     }
 
     /**
@@ -220,5 +219,6 @@ public class Game {
             defined.removeAt(0);
             mask[key] = CellMask.HIDDEN;
         }
+        stillOpened = CLOSED_CELLS;
     }
 }

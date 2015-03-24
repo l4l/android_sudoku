@@ -2,6 +2,7 @@ package org.sudoku.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 
 import org.sudoku.R;
 import org.sudoku.adapter.CellsAdapter;
+import org.sudoku.model.CellMask;
 import org.sudoku.model.Game;
 
 /**
@@ -25,12 +27,35 @@ public class GameActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.ac_game);
 
         GridView grid = (GridView) findViewById(R.id.grid);
 
         grid.setNumColumns(LINE_SIZE);
-        game = new Game();
+
+        int[] cells = null;
+        CellMask[] mask = null;
+        SparseIntArray defined = null;
+
+        if (savedInstanceState != null) {
+            cells = savedInstanceState.getIntArray("cells");
+            int i = 0;
+            mask = new CellMask[LINE_SIZE_S];
+            for (char c: savedInstanceState.getCharArray("mask"))
+                mask[i++] = CellMask.getByChar(c);
+            int[] k = savedInstanceState.getIntArray("defined-key");
+            int[] v = savedInstanceState.getIntArray("defined-val");
+            if (k.length == v.length) {
+                defined = new SparseIntArray();
+                for (i = 0; i < k.length; i++) {
+                    defined.put(k[i], v[i]);
+                }
+            }
+        }
+
+        game = new Game(cells, mask, defined);
+
         final CellsAdapter adapter = new CellsAdapter(this, game);
         grid.setAdapter(adapter);
 

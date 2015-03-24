@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import android.widget.Toast;
 import org.sudoku.model.Game;
 import org.sudoku.custom.KeypadDialog;
 import org.sudoku.R;
@@ -70,7 +71,14 @@ public class CellsAdapter extends BaseAdapter {
                         final KeypadDialog dialog = new KeypadDialog(context, new SimpleCallback() {
                             @Override
                             public void deed(int a) {
-                                game.define(t, a);
+                                if (game.define(t, a)) {
+                                    String text;
+                                    if (game.checkCells())
+                                        text = "You won!";
+                                    else
+                                        text = "Check again, you have mistake(s)";
+                                    Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+                                }
                                 closure.notifyDataSetChanged();
                                 Log.i("Values defining", t + " " + a);
                             }
