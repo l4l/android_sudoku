@@ -74,9 +74,9 @@ public class CellsAdapter extends BaseAdapter {
                                 if (game.define(t, a)) {
                                     String text;
                                     if (game.checkCells())
-                                        text = "You won!";
-                                    else
                                         text = "Check again, you have mistake(s)";
+                                    else
+                                        text = "You won!";
                                     Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
                                 }
                                 closure.notifyDataSetChanged();
