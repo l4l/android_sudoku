@@ -1,4 +1,4 @@
-package org.sudoku.model;
+package org.sudoku.sql;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,9 +11,9 @@ import android.provider.BaseColumns;
  */
 public final class DatabaseHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "Records.db";
     public static final int VERSION = 1;
 
+    public static final String DATABASE_NAME = "SAG.db";
     private final TableEntry tableEntry;
 
     public DatabaseHelper(Context context, TableEntry tableEntry) {
@@ -41,11 +41,13 @@ public final class DatabaseHelper extends SQLiteOpenHelper {
             TITLES = new String[types.length];
             StringBuilder tempQuery = new StringBuilder("CREATE TABLE ")
                     .append(TABLE_NAME)
-                    .append(" ( ID INTEGER PRIMARY KEY");
+                    .append(" (");
             int i = 0;
             for (TableColumn type: types) {
-                tempQuery.append(", \n")
-                         .append(type.getTitle())
+                if (i != 0)
+                    tempQuery.append(", \n");
+
+                tempQuery.append(type.getTitle())
                          .append(" ")
                          .append(type.getType());
                 TITLES[i++] = type.getTitle();

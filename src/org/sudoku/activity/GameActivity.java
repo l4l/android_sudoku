@@ -1,7 +1,7 @@
 package org.sudoku.activity;
 
 import android.app.Activity;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.SparseIntArray;
 import android.view.View;
@@ -13,6 +13,7 @@ import org.sudoku.R;
 import org.sudoku.adapter.CellsAdapter;
 import org.sudoku.model.CellMask;
 import org.sudoku.model.Game;
+import org.sudoku.sql.RecordTable;
 
 /**
  * Created by kitsu.
@@ -24,6 +25,8 @@ public class GameActivity extends Activity {
     public static final int LINE_SIZE_S = LINE_SIZE * LINE_SIZE;
 
     private Game game;
+
+    private long timer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,7 @@ public class GameActivity extends Activity {
         CellMask[] mask = null;
         SparseIntArray defined = null;
 
+        //FIXME change to database queries
         if (savedInstanceState != null) {
             cells = savedInstanceState.getIntArray("cells");
             int i = 0;
@@ -59,7 +63,7 @@ public class GameActivity extends Activity {
 
         final CellsAdapter adapter = new CellsAdapter(this, game);
         grid.setAdapter(adapter);
-
+        timer = System.currentTimeMillis();
         Button checkBtn = (Button) findViewById(R.id.btnCheck);
         Button clearBtn = (Button) findViewById(R.id.btnClear);
         Button genBtn = (Button) findViewById(R.id.btnGenerate);
@@ -96,4 +100,15 @@ public class GameActivity extends Activity {
     }
 
 
+    public void stopTimer() {
+        long t = System.currentTimeMillis();
+        Intent resultIntent = new Intent();
+        //TODO: ask name
+        String name = "Kitsu";
+        resultIntent.putExtra(RecordTable.Titles[0], name);
+        resultIntent.putExtra(RecordTable.Titles[1], t-timer);
+        setResult(Activity.RESULT_OK, resultIntent);
+        timer = t;
+        finish();
+    }
 }

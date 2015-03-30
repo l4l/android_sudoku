@@ -74,6 +74,10 @@ public class Game {
         }
     }
 
+    public boolean isUserDefined(int i) {
+        return i < LINE_SIZE_S && i >= 0 && mask[i] == CellMask.USER_DEFINED;
+    }
+
     /**
      * Just generate array of hided cells
      */

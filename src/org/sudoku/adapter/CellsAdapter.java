@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import android.widget.Toast;
+import org.sudoku.activity.GameActivity;
 import org.sudoku.model.Game;
 import org.sudoku.custom.KeypadDialog;
 import org.sudoku.R;
@@ -73,11 +74,21 @@ public class CellsAdapter extends BaseAdapter {
                             public void deed(int a) {
                                 if (game.define(t, a)) {
                                     String text;
-                                    if (game.checkCells())
+                                    if (game.checkCells()) {
                                         text = "Check again, you have mistake(s)";
-                                    else
+                                        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+                                    } else {
                                         text = "You won!";
-                                    Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+                                        final GameActivity activity = (GameActivity) context;
+                                        activity.stopTimer();
+                                        try {
+                                            this.getClass().wait(1000);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
                                 }
                                 closure.notifyDataSetChanged();
                                 Log.i("Values defining", t + " " + a);
@@ -87,11 +98,11 @@ public class CellsAdapter extends BaseAdapter {
                     }
                 });
 
-        } else
+        } /*else
             if (!clicked && game.checkCell(i))
                 view.setBackgroundColor(Color.RED);
             else
-                view.setBackgroundColor(Color.WHITE);
+                view.setBackgroundColor(Color.WHITE);*/
 
 
         ImageView imageBottom = (ImageView) view
@@ -117,7 +128,13 @@ public class CellsAdapter extends BaseAdapter {
         TextView textView = (TextView) view
                 .findViewById(R.id.celltxt);
         textView.setText(cell == 0 ? " ": String.valueOf(cell));
-
+        if (game.isUserDefined(i))
+            if (!clicked && game.checkCell(i))
+                textView.setTextColor(Color.RED);
+            else
+                textView.setTextColor(Color.GRAY);
+        else
+            textView.setTextColor(Color.BLACK);
         return view;
     }
 

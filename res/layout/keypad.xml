@@ -4,8 +4,9 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:id="@+id/keys"
-              android:layout_gravity="center_horizontal"
+              android:layout_gravity="center"
               android:gravity="center"
-              android:stretchMode="columnWidth">
+              android:background="#fff"
+              android:numColumns="3">
 
 </GridView>
