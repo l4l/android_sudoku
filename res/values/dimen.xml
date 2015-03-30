@@ -2,4 +2,5 @@
 <resources>
     <dimen name="fontCellSize">20sp</dimen>
     <dimen name="aboutFont">20sp</dimen>
+    <dimen name="cellSize">35dp</dimen>
 </resources>
