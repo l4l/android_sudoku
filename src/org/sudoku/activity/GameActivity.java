@@ -1,6 +1,7 @@
 package org.sudoku.activity;
 
 import android.app.Activity;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.SparseIntArray;
 import android.view.View;

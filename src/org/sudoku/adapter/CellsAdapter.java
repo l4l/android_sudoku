@@ -87,28 +87,35 @@ public class CellsAdapter extends BaseAdapter {
                     }
                 });
 
-            ImageView imageBottom = (ImageView) view
-                    .findViewById(R.id.bottomborder);
-            ImageView imageRight = (ImageView) view
-                    .findViewById(R.id.rightborder);
-
-            if (i % LINE_SIZE != LINE_SIZE-1 &&
-                i / LINE_SIZE != LINE_SIZE-1) {
-                if (i % 3 == 2)
-                    imageRight.setImageResource(R.drawable.black_border);
-                else
-                    imageRight.setImageResource(R.drawable.gray_border);
-                if (i / 3 == 2)
-                    imageBottom.setImageResource(R.drawable.black_border);
-                else
-                    imageBottom.setImageResource(R.drawable.gray_border);
-            }
-
         } else
             if (!clicked && game.checkCell(i))
                 view.setBackgroundColor(Color.RED);
             else
                 view.setBackgroundColor(Color.WHITE);
+
+
+        ImageView imageBottom = (ImageView) view
+                .findViewById(R.id.bottomborder);
+        ImageView imageRight = (ImageView) view
+                .findViewById(R.id.rightborder);
+        Log.i("Iters", String.valueOf(i));
+        if (i % LINE_SIZE != LINE_SIZE-1 &&
+                i / LINE_SIZE != LINE_SIZE-1) {
+            if (i % 3 == 2) {
+                imageRight.setImageResource(R.drawable.black_border);
+                Log.i("Iters-black-rgt", String.valueOf(i));
+            } else {
+                imageRight.setImageResource(R.drawable.gray_border);
+                Log.i("Iters-gray-rgt", String.valueOf(i));
+            }
+            if (i / 3 == 2) {
+                imageBottom.setImageResource(R.drawable.black_border);
+                Log.i("Iters-black-btm", String.valueOf(i));
+            } else {
+                imageBottom.setImageResource(R.drawable.gray_border);
+                Log.i("Iters-gray-btm", String.valueOf(i));
+            }
+        }
 
         TextView textView = (TextView) view
                 .findViewById(R.id.celltxt);
