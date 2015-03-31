@@ -1,7 +1,6 @@
 package org.sudoku.activity;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.SparseIntArray;
 import android.view.View;
@@ -78,7 +77,8 @@ public class GameActivity extends Activity {
                 } else
                     text = "Correct";
                 adapter.notifyDataSetChanged();
-                Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),
+                        text, Toast.LENGTH_SHORT).show();
             }
         });
         clearBtn.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +93,7 @@ public class GameActivity extends Activity {
             public void onClick(View view) {
                 game.generateGrid();
                 adapter.notifyDataSetChanged();
+                timer = System.currentTimeMillis();
             }
         });
 
@@ -101,14 +102,16 @@ public class GameActivity extends Activity {
 
 
     public void stopTimer() {
+        if (timer == -1)
+            return;
+
         long t = System.currentTimeMillis();
-        Intent resultIntent = new Intent();
+        String name = "Unnamed";
         //TODO: ask name
-        String name = "Kitsu";
-        resultIntent.putExtra(RecordTable.Titles[0], name);
-        resultIntent.putExtra(RecordTable.Titles[1], t-timer);
-        setResult(Activity.RESULT_OK, resultIntent);
-        timer = t;
+        RecordTable table = RecordTable.getInstance(getBaseContext());
+        long time = timer - t;
+        timer = -1;
+        table.insertPair(name, time);
         finish();
     }
 }

@@ -39,13 +39,13 @@ public final class DatabaseHelper extends SQLiteOpenHelper {
         public TableEntry(String name, TableColumn[] types) {
             TABLE_NAME = name;
             TITLES = new String[types.length];
-            StringBuilder tempQuery = new StringBuilder("CREATE TABLE ")
+            StringBuilder tempQuery = new StringBuilder("CREATE TABLE IF NOT EXISTS ")
                     .append(TABLE_NAME)
                     .append(" (");
             int i = 0;
             for (TableColumn type: types) {
                 if (i != 0)
-                    tempQuery.append(", \n");
+                    tempQuery.append(", ");
 
                 tempQuery.append(type.getTitle())
                          .append(" ")

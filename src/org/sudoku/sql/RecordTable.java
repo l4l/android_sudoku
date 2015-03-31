@@ -13,48 +13,51 @@ import android.util.Pair;
 public class RecordTable {
 
     private static final String TABLE_NAME = "Records";
-    public static final String[] Titles = {"NAME", "TIME"};
+    private static final String[] TITLES = {"NAME", "TIME"};
 
-    private static RecordTable INSTANCE = null;
+    private static RecordTable instance = null;
 
     private final SQLiteDatabase database;
-    private final Context context;
 
     private RecordTable(Context context) {
 
-        this.context = context;
-
         final DatabaseHelper.TableColumn[] recordsColumns = {
-                new DatabaseHelper.TableColumn(Titles[0], "TEXT"),
-                new DatabaseHelper.TableColumn(Titles[1], "INTEGER")
+                new DatabaseHelper.TableColumn(getTitle(0), "TEXT"),
+                new DatabaseHelper.TableColumn(getTitle(1), "INTEGER")
         };
         database = new DatabaseHelper(context,
                 new DatabaseHelper.TableEntry(TABLE_NAME, recordsColumns)
         ).getWritableDatabase();
-        database.query(TABLE_NAME, Titles, null, null, null, null, null);
-
     }
 
     public void insertPair(String name, long time) {
         if (name == null || time == -1)
             return;
         ContentValues values = new ContentValues();
-        values.put(Titles[0], name);
-        values.put(Titles[1], time);
+        values.put(getTitle(0), name);
+        values.put(getTitle(1), time);
         database.insert(TABLE_NAME, null, values);
     }
 
     public Pair<String, Long>[] getTop(int len) {
-        final Cursor cursor =
-                database.rawQuery("SELECT MIN(" + Titles[1] +
-                                  ") FROM (SELECT " + Titles[1] +
-                                  " FROM " + TABLE_NAME +
-                                  " ORDER BY " + Titles[1] +
-                                  " DESC LIMIT " + len + ")", null);
+        String query = "SELECT * FROM " + TABLE_NAME
+                + " ORDER BY -" + getTitle(1)
+                + " DESC LIMIT " + len + ";";
+        Cursor cursor = null;
+        try {
+            cursor = database.rawQuery(query, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+            System.exit(-1);
+        }
+        if (cursor.getCount() < len) {
+            return null;
+        }
         Pair<String, Long>[] pairs = new Pair[cursor.getCount()];
         cursor.moveToFirst();
         String s; long l;
-        for (int i = 0; cursor.isAfterLast(); cursor.moveToNext(), ++i) {
+        for (int i = 0; !cursor.isAfterLast(); cursor.moveToNext(), ++i) {
             s = cursor.getString(0);
             l = cursor.getLong(1);
             pairs[i] = Pair.create(s, l);
@@ -65,13 +68,17 @@ public class RecordTable {
 
     public static RecordTable getInstance(Context context) {
 
-        if (INSTANCE != null) {
-            return INSTANCE;
+        if (instance != null) {
+            return instance;
         } else if (context == null) {
             return null;
         }
 
-        INSTANCE = new RecordTable(context);
-        return INSTANCE;
+        instance = new RecordTable(context);
+        return instance;
+    }
+
+    public static String getTitle(int i) {
+        return i >= 0 && i < TITLES.length ? TITLES[i] : null;
     }
 }

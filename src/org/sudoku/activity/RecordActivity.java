@@ -48,11 +48,14 @@ public class RecordActivity extends Activity {
                 @Override
                 public View getView(int i, View view, ViewGroup viewGroup) {
                     if (view == null) {
-                        String s = top[i].first + "\t" + (top[i].second/1000) + " s.";
+                        String s = top[i].first + "\t"
+                                + (top[i].second / 1000.)
+                                + " sec.";
                         TextView textView = new TextView(getBaseContext());
                         textView.setText(s);
+                        return textView;
                     }
-                    return null;
+                    return view;
                 }
             });
         } catch (NullPointerException e) {

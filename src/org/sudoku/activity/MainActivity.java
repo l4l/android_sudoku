@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import org.sudoku.R;
-import org.sudoku.sql.RecordTable;
 
 /**
  * Created by kitsu.
@@ -19,7 +18,6 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ac_main);
-
     }
 
     public void continueClick(View view) {
@@ -32,7 +30,7 @@ public class MainActivity extends Activity {
     public void newGameClick(View view) {
         Intent i = new Intent();
         i.setClass(this, GameActivity.class);
-        startActivityForResult(i, 18);
+        startActivity(i);
     }
 
     public void recordsClick(View view) {
@@ -49,18 +47,5 @@ public class MainActivity extends Activity {
         dialog.show();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case 18:
-                RecordTable table = RecordTable.getInstance(getBaseContext());
-                String name = data.getStringExtra(RecordTable.Titles[0]);
-                long time = data.getLongExtra(RecordTable.Titles[1], -1);
-                table.insertPair(name, time);
-                break;
-            default:
-        }
-    }
 }
 
