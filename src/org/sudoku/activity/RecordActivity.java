@@ -48,7 +48,7 @@ public class RecordActivity extends Activity {
                 @Override
                 public View getView(int i, View view, ViewGroup viewGroup) {
                     if (view == null) {
-                        String s = top[i].first + "\t"
+                        String s = top[i].first + "   "
                                 + (top[i].second / 1000.)
                                 + " sec.";
                         TextView textView = new TextView(getBaseContext());

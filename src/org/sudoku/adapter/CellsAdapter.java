@@ -82,12 +82,6 @@ public class CellsAdapter extends BaseAdapter {
                                         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
                                         final GameActivity activity = (GameActivity) context;
                                         activity.stopTimer();
-                                        try {
-                                            this.getClass().wait(1000);
-                                        } catch (InterruptedException e) {
-                                            e.printStackTrace();
-                                        }
-
                                     }
                                 }
                                 closure.notifyDataSetChanged();

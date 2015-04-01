@@ -1,12 +1,14 @@
 package org.sudoku.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.SparseIntArray;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.GridView;
-import android.widget.Toast;
+import android.widget.*;
 
 import org.sudoku.R;
 import org.sudoku.adapter.CellsAdapter;
@@ -25,7 +27,7 @@ public class GameActivity extends Activity {
 
     private Game game;
 
-    private long timer;
+    private long timer = -1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -106,12 +108,23 @@ public class GameActivity extends Activity {
             return;
 
         long t = System.currentTimeMillis();
-        String name = "Unnamed";
-        //TODO: ask name
+        timer = t - timer;
+        final AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
+        builder.setTitle("You won!");
+        final EditText input = new EditText(GameActivity.this);
+        builder.setView(input)
+                .setPositiveButton("Apply", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        insertValues(input.getText().toString());
+                    }
+                });
+        builder.create().show();
+    }
+
+    private void insertValues(String name) {
         RecordTable table = RecordTable.getInstance(getBaseContext());
-        long time = timer - t;
-        timer = -1;
-        table.insertPair(name, time);
+        table.insertPair(name, timer);
         finish();
     }
 }
