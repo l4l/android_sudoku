@@ -5,8 +5,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.SparseArray;
 import android.util.SparseIntArray;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
 
@@ -15,6 +15,9 @@ import org.sudoku.adapter.CellsAdapter;
 import org.sudoku.model.CellMask;
 import org.sudoku.model.Game;
 import org.sudoku.sql.RecordTable;
+
+import java.io.*;
+import java.util.Vector;
 
 /**
  * Created by kitsu.
@@ -43,20 +46,37 @@ public class GameActivity extends Activity {
         CellMask[] mask = null;
         SparseIntArray defined = null;
 
-        //FIXME change to database queries
-        if (savedInstanceState != null) {
-            cells = savedInstanceState.getIntArray("cells");
-            int i = 0;
-            mask = new CellMask[LINE_SIZE_S];
-            for (char c: savedInstanceState.getCharArray("mask"))
-                mask[i++] = CellMask.getByChar(c);
-            int[] k = savedInstanceState.getIntArray("defined-key");
-            int[] v = savedInstanceState.getIntArray("defined-val");
-            if (k.length == v.length) {
+        File last = new File(getFilesDir(), "lastgame");
+        if (last.canRead()) {
+            try {
+                InputStream in = new FileInputStream(last);
+                cells = new int[LINE_SIZE_S];
+                mask = new CellMask[LINE_SIZE_S];
                 defined = new SparseIntArray();
-                for (i = 0; i < k.length; i++) {
-                    defined.put(k[i], v[i]);
-                }
+                for (int i = 0; i < cells.length; ++i)
+                    cells[i] = in.read();
+                for (int i = 0; i < mask.length; ++i)
+                    switch (in.read()) {
+                        case 0:
+                            mask[i] = CellMask.HIDDEN;
+                            break;
+                        case 1:
+                            mask[i] = CellMask.USER_DEFINED;
+                            break;
+                        case 2:
+                            mask[i] = CellMask.SHOWED;
+                            break;
+                        default:
+                            throw new Exception("Unexpected number");
+                    }
+                while (in.available() != 0)
+                    defined.put(in.read(), in.read());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                cells = null;
+                mask = null;
+                defined = null;
             }
         }
 
@@ -102,6 +122,49 @@ public class GameActivity extends Activity {
         //TODO: add adv block
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        final String filename = "lastgame";
+        FileOutputStream out;
+        try {
+            out = openFileOutput(filename, Context.MODE_PRIVATE);
+
+            int[] cells = game.getCells();
+            CellMask[] mask = game.getMask();
+            SparseIntArray defined = game.getDefined();
+
+            byte[] data = new byte[cells.length
+                    + mask.length + 2*defined.size()];
+
+            int i = 0;
+            for (int cell: cells)
+                data[i++] = (byte) cell;
+
+            for (CellMask m: mask)
+                switch (m) {
+                    case HIDDEN:
+                        data[i++] = 0;
+                        break;
+                    case USER_DEFINED:
+                        data[i++] = 1;
+                        break;
+                    case SHOWED:
+                        data[i++] = 2;
+                        break;
+                    default:
+                        data[i++] = 3;
+                }
+            for (int j = 0; j < defined.size(); ++j) {
+                data[i++] = (byte) defined.keyAt(j);
+                data[i++] = (byte) defined.valueAt(j);
+            }
+            out.write(data);
+            out.close();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void stopTimer() {
         if (timer == -1)

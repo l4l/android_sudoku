@@ -107,26 +107,6 @@ public class Game {
     }
 
     /**
-     * Just generate array of hided cells.
-     */
-    private void generateMask() {
-
-        for (int i = 0; i < LINE_SIZE_S; i++)
-            mask[i] = CellMask.SHOWED;
-
-        Vector<Integer> a = new Vector<>(LINE_SIZE_S);
-        for (int i = 0; i < LINE_SIZE_S; i++)
-            a.add(i);
-
-        int t;
-        for (int i = 0; i < CLOSED_CELLS; i++) {
-            t = (int)(Math.random() * a.size());
-            mask[a.get(t)] = CellMask.HIDDEN;
-            a.remove(t);
-        }
-    }
-
-    /**
      * Generate <u>ultra-random</u> Sudoku grid
      * based on nanotechnology and quantum-mechanic. <br>
      * As bonus automatically hide cells.
@@ -170,6 +150,63 @@ public class Game {
             }
         }
         generateMask();
+    }
+
+    /**
+     * Checks chosen cell.
+     * @param i is number of cell
+     * @return true if wrong, else correct
+     */
+    public boolean checkCell(int i) {
+        return defined.get(i, cells[i]) != cells[i];
+    }
+
+    /**
+     * Just clear all user-defined cells.
+     */
+    public void clearAnswers() {
+        while (defined.size() > 0) {
+            int key = defined.keyAt(0);
+            defined.removeAt(0);
+            mask[key] = CellMask.HIDDEN;
+        }
+        stillOpened = CLOSED_CELLS;
+    }
+
+    public int getStillOpened() {
+        return stillOpened;
+    }
+
+    public int[] getCells() {
+        return cells.clone();
+    }
+
+    public CellMask[] getMask() {
+        return mask.clone();
+    }
+
+    public SparseIntArray getDefined() {
+        return defined;
+    }
+
+    /**
+     * Just generate array of hided cells.
+     */
+    private void generateMask() {
+
+        for (int i = 0; i < LINE_SIZE_S; i++)
+            mask[i] = CellMask.SHOWED;
+
+        Vector<Integer> a = new Vector<>(LINE_SIZE_S);
+        for (int i = 0; i < LINE_SIZE_S; i++)
+            a.add(i);
+
+        int t;
+        for (int i = 0; i < CLOSED_CELLS; i++) {
+            t = (int)(Math.random() * a.size());
+            mask[a.get(t)] = CellMask.HIDDEN;
+            a.remove(t);
+        }
     }
 
     /**
@@ -245,26 +282,5 @@ public class Game {
             if (checkCell(i))
                 return true;
         return false;
-    }
-
-    /**
-     * Checks chosen cell.
-     * @param i is number of cell
-     * @return true if wrong, else correct
-     */
-    public boolean checkCell(int i) {
-         return defined.get(i, cells[i]) != cells[i];
-    }
-
-    /**
-     * Just clear all user-defined cells.
-     */
-    public void clearAnswers() {
-        while (defined.size() > 0) {
-            int key = defined.keyAt(0);
-            defined.removeAt(0);
-            mask[key] = CellMask.HIDDEN;
-        }
-        stillOpened = CLOSED_CELLS;
     }
 }
