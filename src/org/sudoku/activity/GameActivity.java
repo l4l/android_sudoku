@@ -51,27 +51,31 @@ public class GameActivity extends Activity {
         CellMask[] mask = null;
         SparseIntArray defined = null;
 
-        File last = new File(getFilesDir(), "lastgame");
-        if (last.canRead()) {
-            try {
-                InputStream in = new FileInputStream(last);
-                cells = new int[LINE_SIZE_S];
-                mask = new CellMask[LINE_SIZE_S];
-                defined = new SparseIntArray();
-                for (int i = 0; i < cells.length; ++i)
-                    cells[i] = in.read();
-                for (int i = 0; i < mask.length; ++i)
-                    mask[i] = CellMask.getByNum(in.read());
-                while (in.available() != 0)
-                    defined.put(in.read(), in.read());
+        if (getIntent().getBooleanExtra("resume", false)) {
+            File last = new File(getFilesDir(), "lastgame");
+            if (last.canRead()) {
+                try {
+                    InputStream in = new FileInputStream(last);
+                    cells = new int[LINE_SIZE_S];
+                    mask = new CellMask[LINE_SIZE_S];
+                    defined = new SparseIntArray();
+                    for (int i = 0; i < cells.length; ++i)
+                        cells[i] = in.read();
+                    for (int i = 0; i < mask.length; ++i)
+                        mask[i] = CellMask.getByNum(in.read());
+                    while (in.available() != 0)
+                        defined.put(in.read(), in.read());
 
-            } catch (Exception e) {
-                e.printStackTrace();
-                cells = null;
-                mask = null;
-                defined = null;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    cells = null;
+                    mask = null;
+                    defined = null;
+                }
             }
+            last.delete();
         }
+
 
         game = new Game(cells, mask, defined);
 

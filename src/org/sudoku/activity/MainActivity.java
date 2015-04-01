@@ -6,7 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import android.widget.Button;
 import org.sudoku.R;
+
+import java.io.File;
 
 /**
  * Created by kitsu.
@@ -20,10 +23,20 @@ public class MainActivity extends Activity {
         setContentView(R.layout.ac_main);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        File last = new File(getFilesDir(), "lastgame");
+        if (last.exists() && last.canRead()) {
+            Button btn = (Button) findViewById(R.id.buttonContinue);
+            btn.setEnabled(true);
+        }
+    }
+
     public void continueClick(View view) {
         Intent i = new Intent();
         i.setClass(this, GameActivity.class);
-        i.putExtra("", new byte[GameActivity.LINE_SIZE_S]);
+        i.putExtra("resume", true);
         startActivity(i);
     }
 
