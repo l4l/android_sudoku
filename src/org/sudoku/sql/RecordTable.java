@@ -10,7 +10,7 @@ import android.util.Pair;
  * Created by kitsu.
  * This file is part of SudokuLab in package org.sudoku.sql.
  */
-public class RecordTable {
+public final class RecordTable {
 
     private static final String TABLE_NAME = "Records";
     private static final String[] TITLES = {"NAME", "TIME"};
@@ -43,13 +43,13 @@ public class RecordTable {
         String query = "SELECT * FROM " + TABLE_NAME
                 + " ORDER BY -" + getTitle(1)
                 + " DESC LIMIT " + len + ";";
-        Cursor cursor = null;
+        Cursor cursor;
         try {
             cursor = database.rawQuery(query, null);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
-            System.exit(-1);
+            return null; // It'll be better to replace it with Runtime Exception
         }
         if (cursor.getCount() < len) {
             return null;

@@ -173,8 +173,15 @@ public class Game {
         stillOpened = CLOSED_CELLS;
     }
 
-    public int getStillOpened() {
-        return stillOpened;
+    /**
+     * Checks all cells.
+     * @return if has error(s) true, else false
+     */
+    public boolean checkCells() {
+        for (int i = 0; i < LINE_SIZE_S; i++)
+            if (checkCell(i))
+                return true;
+        return false;
     }
 
     public int[] getCells() {
@@ -271,16 +278,5 @@ public class Game {
 
     private void swapColumnBlock(int c1, int c2) {
         //TODO
-    }
-
-    /**
-     * Checks all cells.
-     * @return if has error(s) true, else false
-     */
-    public boolean checkCells() {
-        for (int i = 0; i < LINE_SIZE_S; i++)
-            if (checkCell(i))
-                return true;
-        return false;
     }
 }

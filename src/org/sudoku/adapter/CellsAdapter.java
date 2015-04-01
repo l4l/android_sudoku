@@ -27,8 +27,8 @@ import static org.sudoku.activity.GameActivity.LINE_SIZE_S;
 public class CellsAdapter extends BaseAdapter {
 
 
-    private Context context;
-    private Game game;
+    private final Context context;
+    private final Game game;
 
     private boolean clicked = true;
 

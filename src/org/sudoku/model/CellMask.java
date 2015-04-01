@@ -5,19 +5,26 @@ package org.sudoku.model;
  * This file is part of SudokuLab in package org.sudoku.
  */
 public enum CellMask {
-    SHOWED,
-    HIDDEN,
-    USER_DEFINED;
-    public static CellMask getByChar(char c) {
-        switch (c) {
-            case 'h':
-            case 'H':
-                return CellMask.HIDDEN;
-            case 'u':
-            case 'U':
-                return CellMask.USER_DEFINED;
+    HIDDEN(0),
+    USER_DEFINED(1),
+    SHOWED(2);
+
+    public final byte num;
+
+    CellMask(int i) {
+        num = (byte) i;
+    }
+
+    public static CellMask getByNum(int i) {
+        switch (i) {
+            case 0:
+                return HIDDEN;
+            case 1:
+                return USER_DEFINED;
+            case 2:
+                return SHOWED;
             default:
-                return CellMask.SHOWED;
+                return null;
         }
     }
 }
