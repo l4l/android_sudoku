@@ -66,6 +66,8 @@ public class GameActivity extends Activity {
                     while (in.available() != 0)
                         defined.put(in.read(), in.read());
 
+                    in.close();
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     cells = null;

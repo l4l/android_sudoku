@@ -61,7 +61,7 @@ public class CellsAdapter extends BaseAdapter {
 
         if (view == null) {
 
-            view = inflater.inflate(R.layout.cell, null);
+            view = inflater.inflate(R.layout.gridelem, null);
             final BaseAdapter closure = this;
             final int t = i;
             if (cell == 0)
@@ -92,12 +92,7 @@ public class CellsAdapter extends BaseAdapter {
                     }
                 });
 
-        } /*else
-            if (!clicked && game.checkCell(i))
-                view.setBackgroundColor(Color.RED);
-            else
-                view.setBackgroundColor(Color.WHITE);*/
-
+        }
 
         ImageView imageBottom = (ImageView) view
                 .findViewById(R.id.bottomborder);

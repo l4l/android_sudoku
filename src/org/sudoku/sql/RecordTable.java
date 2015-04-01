@@ -62,6 +62,7 @@ public final class RecordTable {
             l = cursor.getLong(1);
             pairs[i] = Pair.create(s, l);
         }
+        cursor.close();
 
         return pairs;
     }
