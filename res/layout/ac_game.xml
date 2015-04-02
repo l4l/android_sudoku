@@ -26,19 +26,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/checkBtn"
-            android:id="@+id/btnCheck"/>
+            android:id="@+id/btnCheck"
+            android:singleLine="true"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/clearBtn"
-            android:id="@+id/btnClear"/>
+            android:id="@+id/btnClear"
+            android:singleLine="true"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/generateBtn"
-            android:id="@+id/btnGenerate"/>
+            android:id="@+id/btnGenerate"
+            android:singleLine="true"/>
 
     </LinearLayout>
 

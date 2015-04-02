@@ -51,8 +51,8 @@ public class GameActivity extends Activity {
         CellMask[] mask = null;
         SparseIntArray defined = null;
 
-        if (getIntent().getBooleanExtra("resume", false)) {
-            File last = new File(getFilesDir(), "lastgame");
+        if (getIntent().getBooleanExtra(getString(R.string.restore), false)) {
+            File last = new File(getFilesDir(), getString(R.string.last_game));
             if (last.canRead()) {
                 try {
                     InputStream in = new FileInputStream(last);
@@ -91,15 +91,12 @@ public class GameActivity extends Activity {
         checkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String text;
                 if (game.checkCells()) {
-                    text = "Wrong";
                     adapter.setUnclicked();
-                } else
-                    text = "Correct";
-                adapter.notifyDataSetChanged();
-                Toast.makeText(getApplicationContext(),
-                        text, Toast.LENGTH_SHORT).show();
+                    adapter.notifyDataSetChanged();
+                    Toast.makeText(getApplicationContext(),
+                            getString(R.string.wrong), Toast.LENGTH_SHORT).show();
+                }
             }
         });
         clearBtn.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +121,7 @@ public class GameActivity extends Activity {
     @Override
     protected void onStop() {
         super.onStop();
-        final String filename = "lastgame";
+        final String filename = getString(R.string.last_game);
         FileOutputStream out;
         try {
             out = openFileOutput(filename, Context.MODE_PRIVATE);
@@ -162,10 +159,10 @@ public class GameActivity extends Activity {
         timer = t - timer;
         final AlertDialog.Builder builder =
                 new AlertDialog.Builder(GameActivity.this);
-        builder.setTitle("You won!");
+        builder.setTitle(getString(R.string.won));
         final EditText input = new EditText(GameActivity.this);
         builder.setView(input)
-                .setPositiveButton("Apply",
+                .setPositiveButton(getString(R.string.apply),
                         new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

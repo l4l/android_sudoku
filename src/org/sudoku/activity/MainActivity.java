@@ -26,7 +26,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        File last = new File(getFilesDir(), "lastgame");
+        File last = new File(getFilesDir(), getString(R.string.last_game));
         if (last.exists() && last.canRead()) {
             Button btn = (Button) findViewById(R.id.buttonContinue);
             btn.setEnabled(true);
@@ -36,7 +36,7 @@ public class MainActivity extends Activity {
     public void continueClick(View view) {
         Intent i = new Intent();
         i.setClass(this, GameActivity.class);
-        i.putExtra("resume", true);
+        i.putExtra(getString(R.string.restore), true);
         startActivity(i);
     }
 

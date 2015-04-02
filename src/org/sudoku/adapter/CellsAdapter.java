@@ -75,10 +75,10 @@ public class CellsAdapter extends BaseAdapter {
                                 if (game.define(t, a)) {
                                     String text;
                                     if (game.checkCells()) {
-                                        text = "Check again, you have mistake(s)";
+                                        text = context.getString(R.string.mistake);
                                         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
                                     } else {
-                                        text = "You won!";
+                                        text = context.getString(R.string.won);
                                         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
                                         final GameActivity activity = (GameActivity) context;
                                         activity.stopTimer();

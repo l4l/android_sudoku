@@ -27,7 +27,7 @@ public class RecordActivity extends Activity {
                         .getTop(recordsSize);
         if (top == null) {
             final TextView textView = (TextView) findViewById(R.id.errorText);
-            textView.setText("Недостаточно результатов!");
+            textView.setText(getString(R.string.not_enough_results));
             return;
         }
         ListView listView = (ListView) findViewById(R.id.topView);
@@ -52,7 +52,7 @@ public class RecordActivity extends Activity {
                 if (view == null) {
                     String s = top[i].first + "   "
                             + (top[i].second / 1000.)
-                            + " sec.";
+                            + getString(R.string.seconds);
                     TextView textView = new TextView(getBaseContext());
                     textView.setText(s);
                     return textView;

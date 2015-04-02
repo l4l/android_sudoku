@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Button names -->
+    <string name="continueBtn">Продолжить</string>
+    <string name="newGameBtn">Новая игра</string>
+    <string name="authorBtn">Об авторе</string>
+    <string name="recordsBtn">Рекорды</string>
+    <string name="checkBtn">Проверить</string>
+    <string name="clearBtn">Очистить</string>
+    <string name="generateBtn">Генерировать</string>
+
+
+    <!-- Author fields -->
+    <string name="author">Об авторе</string>
+    <string name="authorValue">Минибаев Евгений</string>
+    <string name="contacts">Контакты</string>
+
+    <!-- In game text-->
+    <string name="wrong">Где-то ошибка</string>
+    <string name="won">Вы выиграли!</string>
+    <string name="apply">Сохранить результат</string>
+    <string name="mistake">Перепроверьте, у вас ошибки!</string>
+    <string name="not_enough_results">Недостаточно результатов!</string>
+    <string name="seconds">сек.</string>
+</resources>
