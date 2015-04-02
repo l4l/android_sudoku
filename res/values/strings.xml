@@ -21,6 +21,8 @@
 
     <!-- In game text-->
     <string name="wrong">Wrong</string>
+    <string name="correct">Correct</string>
+    <string name="checkfalse">Checks ended</string>
     <string name="won">You won!</string>
     <string name="apply">Apply</string>
     <string name="mistake">Check again, you have mistake(s)</string>

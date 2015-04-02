@@ -33,9 +33,13 @@ public class GameActivity extends Activity {
     public static final int LINE_SIZE = 9;
     public static final int LINE_SIZE_S = LINE_SIZE * LINE_SIZE;
 
+    private static final int DEFAULT_CHECKS_NUMBER = 3;
+
     private Game game;
 
     private long timer = -1;
+
+    private int checksLeft = DEFAULT_CHECKS_NUMBER;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,12 +95,18 @@ public class GameActivity extends Activity {
         checkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (game.checkCells()) {
+                checksLeft = checksLeft <= 0 ? 0: checksLeft - 1;
+                String text;
+                if (checksLeft <= 0) {
+                    text = getString(R.string.checkfalse);
+                } else if (game.checkCells()) {
                     adapter.setUnclicked();
-                    adapter.notifyDataSetChanged();
-                    Toast.makeText(getApplicationContext(),
-                            getString(R.string.wrong), Toast.LENGTH_SHORT).show();
-                }
+                    text = getString(R.string.wrong);
+                } else
+                    text = getString(R.string.correct);
+                adapter.notifyDataSetChanged();
+                Toast.makeText(getApplicationContext(),
+                        text, Toast.LENGTH_SHORT).show();
             }
         });
         clearBtn.setOnClickListener(new View.OnClickListener() {
@@ -112,6 +122,7 @@ public class GameActivity extends Activity {
                 game.generateGrid();
                 adapter.notifyDataSetChanged();
                 timer = System.currentTimeMillis();
+                checksLeft = DEFAULT_CHECKS_NUMBER;
             }
         });
 
