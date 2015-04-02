@@ -34,7 +34,7 @@ public class RecordActivity extends Activity {
         listView.setAdapter(new BaseAdapter() {
             @Override
             public int getCount() {
-                return recordsSize;
+                return top.length;
             }
 
             @Override
