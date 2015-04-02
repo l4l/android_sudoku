@@ -84,47 +84,7 @@ public class GameActivity extends Activity {
 
 
         game = new Game(cells, mask, defined);
-
-        final CellsAdapter adapter = new CellsAdapter(this, game);
-        grid.setAdapter(adapter);
-        timer = System.currentTimeMillis();
-        Button checkBtn = (Button) findViewById(R.id.btnCheck);
-        Button clearBtn = (Button) findViewById(R.id.btnClear);
-        Button genBtn = (Button) findViewById(R.id.btnGenerate);
-
-        checkBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                checksLeft = checksLeft <= 0 ? 0: checksLeft - 1;
-                String text;
-                if (checksLeft <= 0) {
-                    text = getString(R.string.checkfalse);
-                } else if (game.checkCells()) {
-                    adapter.setUnclicked();
-                    text = getString(R.string.wrong);
-                } else
-                    text = getString(R.string.correct);
-                adapter.notifyDataSetChanged();
-                Toast.makeText(getApplicationContext(),
-                        text, Toast.LENGTH_SHORT).show();
-            }
-        });
-        clearBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                game.clearAnswers();
-                adapter.notifyDataSetChanged();
-            }
-        });
-        genBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                game.generateGrid();
-                adapter.notifyDataSetChanged();
-                timer = System.currentTimeMillis();
-                checksLeft = DEFAULT_CHECKS_NUMBER;
-            }
-        });
+        setAdapter(grid);
 
         //TODO: add adv block
     }
@@ -181,6 +141,54 @@ public class GameActivity extends Activity {
                     }
                 });
         builder.create().show();
+    }
+
+    private void setAdapter(GridView grid) {
+
+        final CellsAdapter adapter = new CellsAdapter(this, game);
+        grid.setAdapter(adapter);
+
+        timer = System.currentTimeMillis();
+
+        Button checkBtn = (Button) findViewById(R.id.btnCheck);
+        Button clearBtn = (Button) findViewById(R.id.btnClear);
+        Button genBtn = (Button) findViewById(R.id.btnGenerate);
+
+        checkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String text;
+                if (checksLeft <= 0) {
+                    text = getString(R.string.exhaustion_check);
+                } else if (game.checkCells()) {
+                    adapter.setUnclicked();
+                    text = getString(R.string.wrong);
+                } else
+                    text = getString(R.string.correct);
+
+                checksLeft = checksLeft <= 0 ? 0: checksLeft - 1;
+                adapter.notifyDataSetChanged();
+                Toast.makeText(getApplicationContext(),
+                        text, Toast.LENGTH_SHORT).show();
+            }
+        });
+        clearBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                game.clearAnswers();
+                adapter.notifyDataSetChanged();
+            }
+        });
+        genBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                game.generateGrid();
+                setAdapter((GridView) findViewById(R.id.grid));
+                adapter.notifyDataSetChanged();
+                timer = System.currentTimeMillis();
+                checksLeft = DEFAULT_CHECKS_NUMBER;
+            }
+        });
     }
 
     private void insertValues(String name) {

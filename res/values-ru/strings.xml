@@ -18,7 +18,7 @@
     <!-- In game text-->
     <string name="wrong">Где-то ошибка</string>
     <string name="correct">Все верно</string>
-    <string name="checkfalse">Проверки закончились</string>
+    <string name="exhaustion_check">Проверки закончились</string>
     <string name="won">Вы выиграли!</string>
     <string name="apply">Сохранить результат</string>
     <string name="mistake">Перепроверьте, у вас ошибки!</string>
