@@ -51,7 +51,7 @@ public final class RecordTable {
             System.out.println(e.getMessage());
             return null; // It'll be better to replace it with Runtime Exception
         }
-        if (cursor.getCount() < len) {
+        if (cursor.getCount() == 0) {
             return null;
         }
         Pair<String, Long>[] pairs = new Pair[cursor.getCount()];
