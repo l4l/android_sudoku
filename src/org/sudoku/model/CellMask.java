@@ -1,10 +1,12 @@
 package org.sudoku.model;
 
+import java.io.Serializable;
+
 /**
  * Created by kitsu.
  * This file is part of SudokuLab in package org.sudoku.
  */
-public enum CellMask {
+public enum CellMask implements Serializable {
     HIDDEN(0),
     USER_DEFINED(1),
     SHOWED(2);
