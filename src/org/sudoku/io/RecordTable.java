@@ -1,4 +1,4 @@
-package org.sudoku.sql;
+package org.sudoku.io;
 
 import android.content.ContentValues;
 import android.content.Context;

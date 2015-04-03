@@ -2,7 +2,6 @@ package org.sudoku.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.SparseIntArray;
@@ -14,15 +13,13 @@ import android.widget.GridView;
 import android.widget.Toast;
 import org.sudoku.R;
 import org.sudoku.adapter.CellsAdapter;
+import org.sudoku.io.FileReader;
+import org.sudoku.io.FileWriter;
 import org.sudoku.model.CellMask;
 import org.sudoku.model.Game;
-import org.sudoku.sql.RecordTable;
+import org.sudoku.io.RecordTable;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * Created by kitsu.
@@ -41,83 +38,86 @@ public class GameActivity extends Activity {
 
     private int checksLeft = DEFAULT_CHECKS_NUMBER;
 
+    private GridView grid;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.ac_game);
+    }
 
-        GridView grid = (GridView) findViewById(R.id.grid);
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        grid = (GridView) findViewById(R.id.grid);
         grid.setNumColumns(LINE_SIZE);
 
         int[] cells = null;
         CellMask[] mask = null;
         SparseIntArray defined = null;
 
-        if (getIntent().getBooleanExtra(getString(R.string.restore), false)) {
-            File last = new File(getFilesDir(), getString(R.string.last_game));
-            if (last.canRead()) {
-                try {
-                    InputStream in = new FileInputStream(last);
-                    cells = new int[LINE_SIZE_S];
-                    mask = new CellMask[LINE_SIZE_S];
-                    defined = new SparseIntArray();
-                    for (int i = 0; i < cells.length; ++i)
-                        cells[i] = in.read();
-                    for (int i = 0; i < mask.length; ++i)
-                        mask[i] = CellMask.getByNum(in.read());
-                    while (in.available() != 0)
-                        defined.put(in.read(), in.read());
+        if (getIntent().getBooleanExtra(getString(R.string.restore), false))
 
-                    in.close();
+            try {
+                FileReader reader = new FileReader(getFilesDir(),
+                        getString(R.string.last_game));
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    cells = null;
-                    mask = null;
-                    defined = null;
+                cells = reader.getObject();
+
+                mask = reader.getObject();
+
+
+                defined = new SparseIntArray();
+                int[] tmp = reader.getObject();
+                int j = 0, key = 0, value;
+                for (int i: tmp) {
+                    if (j == 0) {
+                        key = i;
+                    } else {
+                        value = i;
+                        defined.put(key, value);
+                    }
+                    j = (j+1) % 2;
                 }
-            }
-            last.delete();
-        }
 
+            } catch (Exception e) {
+                e.printStackTrace();
+                cells = null;
+                mask = null;
+                defined = null;
+            }
 
         game = new Game(cells, mask, defined);
-        setAdapter(grid);
-
-        //TODO: add adv block
+        setAdapter();
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        final String filename = getString(R.string.last_game);
-        FileOutputStream out;
+    protected void onPause() {
+        super.onPause();
+
         try {
-            out = openFileOutput(filename, Context.MODE_PRIVATE);
+            FileWriter writer = new FileWriter(getFilesDir(),
+                    getString(R.string.last_game));
 
             int[] cells = game.getCells();
             CellMask[] mask = game.getMask();
             SparseIntArray defined = game.getDefined();
 
-            byte[] data = new byte[cells.length
-                    + mask.length + 2*defined.size()];
 
             int i = 0;
-            for (int cell: cells)
-                data[i++] = (byte) cell;
+            writer.write(cells);
+            writer.write(mask);
 
-            for (CellMask m: mask)
-                data[i++] = m.num;
+            int[] data = new int[2*defined.size()];
 
             for (int j = 0; j < defined.size(); ++j) {
-                data[i++] = (byte) defined.keyAt(j);
-                data[i++] = (byte) defined.valueAt(j);
+                data[i++] = defined.keyAt(j);
+                data[i++] = defined.valueAt(j);
             }
-            out.write(data);
-            out.close();
-        }catch (IOException e) {
+            writer.write(data);
+            writer.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -143,7 +143,7 @@ public class GameActivity extends Activity {
         builder.create().show();
     }
 
-    private void setAdapter(GridView grid) {
+    private void setAdapter() {
 
         final CellsAdapter adapter = new CellsAdapter(this, game);
         grid.setAdapter(adapter);
@@ -183,7 +183,7 @@ public class GameActivity extends Activity {
             @Override
             public void onClick(View view) {
                 game.generateGrid();
-                setAdapter((GridView) findViewById(R.id.grid));
+                setAdapter();
                 adapter.notifyDataSetChanged();
                 timer = System.currentTimeMillis();
                 checksLeft = DEFAULT_CHECKS_NUMBER;

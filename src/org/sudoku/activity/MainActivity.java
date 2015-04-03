@@ -8,8 +8,7 @@ import android.view.View;
 
 import android.widget.Button;
 import org.sudoku.R;
-
-import java.io.File;
+import org.sudoku.io.FileReader;
 
 /**
  * Created by kitsu.
@@ -26,10 +25,12 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        File last = new File(getFilesDir(), getString(R.string.last_game));
-        if (last.exists() && last.canRead()) {
-            Button btn = (Button) findViewById(R.id.buttonContinue);
+        Button btn = (Button) findViewById(R.id.buttonContinue);
+        try {
+            new FileReader(getFilesDir(), getString(R.string.last_game));
             btn.setEnabled(true);
+        } catch (Exception e) {
+            btn.setEnabled(false);
         }
     }
 

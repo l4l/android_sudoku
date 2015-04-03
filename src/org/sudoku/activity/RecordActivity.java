@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import org.sudoku.R;
-import org.sudoku.sql.RecordTable;
+import org.sudoku.io.RecordTable;
 
 /**
  * Created by kitsu.
