@@ -6,7 +6,6 @@
               android:id="@+id/celltxt"
               android:gravity="center"
               android:textColor="#000"
-              android:background="#fff"
               android:textStyle="bold"
               android:textSize="@dimen/fontCellSize"
               android:layout_column="0"
