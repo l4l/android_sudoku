@@ -1,9 +1,6 @@
 package org.sudoku.io;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 
 /**
  * Created by kitsu.
@@ -27,26 +24,18 @@ public class FileReader extends FileManager {
         input = new ObjectInputStream(in);
     }
 
-    public int[] getIntArray(int size) throws IOException {
-        int[] array = new int[size];
-
-        for (int i = 0; i < array.length && in.available() != 0; ++i)
-            array[i] = in.read();
-
-        return array;
-    }
-
-    public <T> void getObject(T t) throws IOException {
+    public <T extends Serializable> T getObject() throws IOException {
         try {
-            t = (T)input.readObject();
+            return (T)input.readObject();
         } catch (ClassNotFoundException e) {
-            t = null;
+            return null;
         }
     }
 
     @Override
     public void close() throws IOException {
-        super.close();
+        if (!file.delete())
+            throw new IOException();
         in.close();
     }
 }

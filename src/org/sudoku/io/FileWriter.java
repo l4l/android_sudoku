@@ -23,8 +23,7 @@ public class FileWriter extends FileManager {
         if (!file.canWrite()) {
             throw new IOException();
         }
-        FileOutputStream os = new FileOutputStream(file);
-        out = new ObjectOutputStream(os);
+        out = new ObjectOutputStream(new FileOutputStream(file));
     }
 
     public <T extends Serializable> void write(T data) throws IOException {

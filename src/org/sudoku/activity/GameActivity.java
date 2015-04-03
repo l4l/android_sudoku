@@ -38,14 +38,19 @@ public class GameActivity extends Activity {
 
     private int checksLeft = DEFAULT_CHECKS_NUMBER;
 
+    private GridView grid;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.ac_game);
+    }
 
-        GridView grid = (GridView) findViewById(R.id.grid);
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        grid = (GridView) findViewById(R.id.grid);
         grid.setNumColumns(LINE_SIZE);
 
         int[] cells = null;
@@ -55,16 +60,16 @@ public class GameActivity extends Activity {
         if (getIntent().getBooleanExtra(getString(R.string.restore), false))
 
             try {
-                FileReader reader = new FileReader(getFilesDir(), getString(R.string.last_game));
+                FileReader reader = new FileReader(getFilesDir(),
+                        getString(R.string.last_game));
 
-                cells = new int[LINE_SIZE_S];
-                reader.getObject(cells);
+                cells = reader.getObject();
 
-                reader.getObject(mask);
+                mask = reader.getObject();
 
 
                 defined = new SparseIntArray();
-                int[] tmp = reader.getIntArray(Integer.MAX_VALUE);
+                int[] tmp = reader.getObject();
                 int j = 0, key = 0, value;
                 for (int i: tmp) {
                     if (j == 0) {
@@ -84,9 +89,7 @@ public class GameActivity extends Activity {
             }
 
         game = new Game(cells, mask, defined);
-        setAdapter(grid);
-
-        //TODO: add adv block
+        setAdapter();
     }
 
     @Override
@@ -94,7 +97,8 @@ public class GameActivity extends Activity {
         super.onPause();
 
         try {
-            FileWriter writer = new FileWriter(getFilesDir(), getString(R.string.last_game));
+            FileWriter writer = new FileWriter(getFilesDir(),
+                    getString(R.string.last_game));
 
             int[] cells = game.getCells();
             CellMask[] mask = game.getMask();
@@ -139,7 +143,7 @@ public class GameActivity extends Activity {
         builder.create().show();
     }
 
-    private void setAdapter(GridView grid) {
+    private void setAdapter() {
 
         final CellsAdapter adapter = new CellsAdapter(this, game);
         grid.setAdapter(adapter);
@@ -179,7 +183,7 @@ public class GameActivity extends Activity {
             @Override
             public void onClick(View view) {
                 game.generateGrid();
-                setAdapter((GridView) findViewById(R.id.grid));
+                setAdapter();
                 adapter.notifyDataSetChanged();
                 timer = System.currentTimeMillis();
                 checksLeft = DEFAULT_CHECKS_NUMBER;

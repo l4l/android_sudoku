@@ -19,9 +19,6 @@ public abstract class FileManager {
         }
     }
 
-    public void close() throws IOException{
-        if (!file.delete())
-            throw new IOException();
-    }
+    public abstract void close() throws IOException;
 
 }
