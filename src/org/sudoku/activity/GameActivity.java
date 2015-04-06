@@ -48,6 +48,10 @@ public class GameActivity extends Activity {
     private long timer = -1;
 
     /**
+     * Flag for saving in onPause method
+     */
+    private boolean isNeedSave = true;
+    /**
      * Limitations left
      */
     private int checksLeft = DEFAULT_CHECKS_NUMBER;
@@ -58,6 +62,7 @@ public class GameActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ac_game);
+        isNeedSave = true;
     }
 
     @Override
@@ -109,7 +114,8 @@ public class GameActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-
+        if (!isNeedSave)
+            return;
         try {
             FileWriter writer = new FileWriter(getFilesDir(),
                     getString(R.string.last_game));
@@ -162,6 +168,8 @@ public class GameActivity extends Activity {
                     }
                 });
         builder.create().show();
+        isNeedSave = false;
+        finish();
     }
 
     /**

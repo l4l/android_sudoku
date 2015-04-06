@@ -39,7 +39,7 @@ public class FileReader extends FileManager {
 
     @Override
     public void close() throws IOException {
-        remove();
         in.close();
+        remove();
     }
 }

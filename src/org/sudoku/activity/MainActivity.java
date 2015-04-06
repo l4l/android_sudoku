@@ -27,7 +27,7 @@ public class MainActivity extends Activity {
         super.onResume();
         Button btn = (Button) findViewById(R.id.buttonContinue);
         try {
-            if (!new FileReader(getFilesDir(), getString(R.string.last_game)).isEmpty())
+            if (new FileReader(getFilesDir(), getString(R.string.last_game)).isEmpty())
                 throw new Exception("Empty saved file");
             btn.setEnabled(true);
         } catch (Exception e) {

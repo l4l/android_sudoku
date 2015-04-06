@@ -31,7 +31,7 @@ public class Game {
     /**
      * How much cells hide at the beginning.
      */
-    public static final int CLOSED_CELLS = 40;
+    public static final int CLOSED_CELLS = 4;
     /**
      * Number of non user-defined cells.
      */
