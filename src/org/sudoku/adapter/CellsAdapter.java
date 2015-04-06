@@ -108,6 +108,10 @@ public class CellsAdapter extends BaseAdapter {
         return view;
     }
 
+    /**
+     * Reset flag clicked
+     * Used for the coloring wrong cells
+     */
     public void setUnclicked() {
         this.clicked = false;
     }

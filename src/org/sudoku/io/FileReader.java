@@ -11,6 +11,11 @@ public class FileReader extends FileManager {
     private final FileInputStream in;
     private final ObjectInputStream input;
 
+    /**
+     * @param file is directory
+     * @param name is filename
+     * @throws IOException
+     */
     public FileReader(File file, String name) throws IOException {
         this(new File(file, name));
     }

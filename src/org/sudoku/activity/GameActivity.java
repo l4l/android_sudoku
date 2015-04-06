@@ -27,15 +27,29 @@ import java.io.IOException;
  */
 public class GameActivity extends Activity {
 
+    /**
+     * Size of sudoku matrix
+     */
     public static final int LINE_SIZE = 9;
     public static final int LINE_SIZE_S = LINE_SIZE * LINE_SIZE;
 
+    /**
+     * Limitation of in-game checks
+     */
     private static final int DEFAULT_CHECKS_NUMBER = 3;
 
     private Game game;
 
+    /**
+     * Timer of game
+     * Started at new generation of game
+     * Ended at winning by user
+     */
     private long timer = -1;
 
+    /**
+     * Limitations left
+     */
     private int checksLeft = DEFAULT_CHECKS_NUMBER;
 
     private GridView grid;
@@ -122,6 +136,9 @@ public class GameActivity extends Activity {
         }
     }
 
+    /**
+     * Stops timers, show win alert and saves game
+     */
     public void endGame() {
         if (timer == -1)
             return;
@@ -147,6 +164,9 @@ public class GameActivity extends Activity {
         builder.create().show();
     }
 
+    /**
+     * Reset adapter to the GridView
+     */
     private void setAdapter() {
 
         final CellsAdapter adapter = new CellsAdapter(this, game);
@@ -195,6 +215,10 @@ public class GameActivity extends Activity {
         });
     }
 
+    /**
+     * Insert values to the top records
+     * @param name is user-defined nickname
+     */
     private void insertValues(String name) {
         RecordTable table = RecordTable.getInstance(getBaseContext());
         table.insertPair(name, timer);

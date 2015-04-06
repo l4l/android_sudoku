@@ -128,6 +128,11 @@ public class Game {
         return i < LINE_SIZE_S && i >= 0 && mask[i] == CellMask.USER_DEFINED;
     }
 
+    /**
+     * Answer on request of type cell.
+     * @param i number of cell
+     * @return true if cell's mask CellMask.SHOWED
+     */
     public boolean isShowed(int i) {
         return i < LINE_SIZE_S && i >= 0 && mask[i] == CellMask.SHOWED;
     }
@@ -210,14 +215,23 @@ public class Game {
         return false;
     }
 
+    /**
+     * @return copy of sudoku matrix
+     */
     public int[] getCells() {
         return cells.clone();
     }
 
+    /**
+     * @return copy of mask sudoku matrix
+     */
     public CellMask[] getMask() {
         return mask.clone();
     }
 
+    /**
+     * @return user-defined key-value pairs
+     */
     public SparseIntArray getDefined() {
         return defined;
     }
