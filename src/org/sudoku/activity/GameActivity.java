@@ -169,7 +169,6 @@ public class GameActivity extends Activity {
                 });
         builder.create().show();
         isNeedSave = false;
-        finish();
     }
 
     /**
