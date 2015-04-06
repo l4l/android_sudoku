@@ -9,8 +9,9 @@
     <string name="authorBtn">Author</string>
     <string name="recordsBtn">Top 10</string>
     <string name="checkBtn">Check</string>
-    <string name="clearBtn">Clear</string>
+    <string name="resetBtn">Clear</string>
     <string name="generateBtn">Generate</string>
+    <string name="clearCellBtn">Clear</string>
 
     <!-- Author fields -->
     <string name="author">Author</string>
@@ -32,4 +33,5 @@
     <!-- Java code consts -->
     <string name="last_game" translatable="false">lastgame</string>
     <string name="restore" translatable="false">isGameSavedFlag</string>
+
 </resources>

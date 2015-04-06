@@ -7,13 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import android.widget.Toast;
 import org.sudoku.activity.GameActivity;
 import org.sudoku.model.Game;
-import org.sudoku.custom.KeypadDialog;
+import org.sudoku.activity.KeypadDialog;
 import org.sudoku.R;
 
 
@@ -64,7 +63,7 @@ public class CellsAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.cell, null);
             final BaseAdapter closure = this;
             final int t = i;
-            if (cell == 0)
+            if (!game.isShowed(t))
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -72,7 +71,9 @@ public class CellsAdapter extends BaseAdapter {
                         final KeypadDialog dialog = new KeypadDialog(context, new SimpleCallback() {
                             @Override
                             public void deed(int a) {
-                                if (game.define(t, a)) {
+                                if (a == LINE_SIZE) {
+                                    game.undefine(t);
+                                } else if (game.define(t, a)) {
                                     String text;
                                     if (game.checkCells()) {
                                         text = context.getString(R.string.mistake);
@@ -81,13 +82,13 @@ public class CellsAdapter extends BaseAdapter {
                                         text = context.getString(R.string.won);
                                         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
                                         final GameActivity activity = (GameActivity) context;
-                                        activity.stopTimer();
+                                        activity.endGame();
                                     }
                                 }
                                 closure.notifyDataSetChanged();
                                 Log.i("Values defining", t + " " + a);
                             }
-                        });
+                        }, game.isUserDefined(t));
                         dialog.show();
                     }
                 });

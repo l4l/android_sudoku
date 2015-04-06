@@ -10,6 +10,7 @@
               android:textSize="@dimen/fontCellSize"
               android:layout_column="0"
               android:width="@dimen/cellSize"
-              android:height="@dimen/cellSize">
+              android:height="@dimen/cellSize"
+              android:clickable="true">
 
 </TextView>

@@ -19,6 +19,15 @@ public abstract class FileManager {
         }
     }
 
+    public final boolean isEmpty() {
+        return file.length() == 0;
+    }
+
+    protected final void remove() throws IOException {
+        if (!file.delete())
+            throw new IOException();
+    }
+
     public abstract void close() throws IOException;
 
 }

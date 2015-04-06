@@ -122,10 +122,14 @@ public class GameActivity extends Activity {
         }
     }
 
-    public void stopTimer() {
+    public void endGame() {
         if (timer == -1)
             return;
-
+        try {
+            new FileReader(getFilesDir(), getString(R.string.last_game)).close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         long t = System.currentTimeMillis();
         timer = t - timer;
         final AlertDialog.Builder builder =

@@ -63,6 +63,8 @@ public class Game {
             this.mask = new CellMask[LINE_SIZE_S];
             this.defined = new SparseIntArray();
             generateGrid();
+        } else {
+            stillOpened = CLOSED_CELLS - defined.size();
         }
     }
 
@@ -70,14 +72,34 @@ public class Game {
      * Set cell to user-defined.
      * @param c cell number
      * @param v value to replace current
-     * @return true if everything is ok
+     * @return true if all cells are defined by user
      */
     public boolean define(int c, int v) {
         if (c < 0 || c >= LINE_SIZE_S || v < 0 || v >= LINE_SIZE)
             return false;
         defined.put(c, v + 1);
-        mask[c] = CellMask.USER_DEFINED;
-        return --stillOpened == 0;
+        if (mask[c] == CellMask.HIDDEN) {
+            --stillOpened;
+            mask[c] = CellMask.USER_DEFINED;
+        }
+        return stillOpened == 0;
+    }
+
+    /**
+     * Remove user-defined cell
+     * @param c cell number
+     * @return true if removed
+     */
+    public boolean undefine (int c) {
+        if (c < 0 || c >= LINE_SIZE_S ||
+                defined.get(c, -1) == -1 || mask[c] == CellMask.SHOWED)
+            return false;
+        defined.removeAt(defined.indexOfKey(c));
+        if (mask[c] == CellMask.USER_DEFINED) {
+            mask[c] = CellMask.HIDDEN;
+            stillOpened++;
+        }
+        return true;
     }
 
     /**
@@ -104,6 +126,10 @@ public class Game {
      */
     public boolean isUserDefined(int i) {
         return i < LINE_SIZE_S && i >= 0 && mask[i] == CellMask.USER_DEFINED;
+    }
+
+    public boolean isShowed(int i) {
+        return i < LINE_SIZE_S && i >= 0 && mask[i] == CellMask.SHOWED;
     }
 
     /**

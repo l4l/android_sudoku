@@ -1,4 +1,4 @@
-package org.sudoku.custom;
+package org.sudoku.activity;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -20,15 +21,16 @@ import static org.sudoku.activity.GameActivity.LINE_SIZE;
  */
 public class KeypadDialog extends Dialog {
 
-    public KeypadDialog(final Context context, final SimpleCallback callback) {
+    public KeypadDialog(final Context context, final SimpleCallback callback, boolean isSet) {
         super(context);
         setCanceledOnTouchOutside(true);
-        GridView view = (GridView)(((LayoutInflater) context
+        View view = ((LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-                .inflate(R.layout.keypad, null));
+                .inflate(R.layout.keypad, null);
         setContentView(view);
-        view.setNumColumns(LINE_SIZE/3);
-        view.setAdapter(new BaseAdapter() {
+        GridView gridView = (GridView) view.findViewById(R.id.keys);
+        gridView.setNumColumns(LINE_SIZE / 3);
+        gridView.setAdapter(new BaseAdapter() {
             @Override
             public int getCount() {
                 return LINE_SIZE;
@@ -54,6 +56,7 @@ public class KeypadDialog extends Dialog {
                     ((TextView) view
                             .findViewById(R.id.celltxt))
                             .setText(String.valueOf(i + 1));
+
                     view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -61,10 +64,21 @@ public class KeypadDialog extends Dialog {
                             dismiss();
                         }
                     });
+
                 }
                 return view;
             }
         });
+        Button clear = (Button) view.findViewById(R.id.clearCellBtn);
+        clear.setEnabled(isSet);
+        if (isSet)
+            clear.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    callback.deed(LINE_SIZE);
+                    dismiss();
+                }
+            });
     }
 
 }

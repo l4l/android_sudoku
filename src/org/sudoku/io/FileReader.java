@@ -34,8 +34,7 @@ public class FileReader extends FileManager {
 
     @Override
     public void close() throws IOException {
-        if (!file.delete())
-            throw new IOException();
+        remove();
         in.close();
     }
 }
