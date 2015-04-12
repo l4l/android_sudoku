@@ -15,7 +15,7 @@
 
     <!-- Author fields -->
     <string name="author">Author</string>
-    <string name="authorValue">Minibaev Evgeny</string>
+    <string name="authorValue" translatable="false">Just Kitsu</string>
     <string name="contacts">Contacts</string>
     <string name="contactsValue" translatable="false">mail@kitsu.me</string>
     <string name="textSeparator" translatable="false">&#160;:&#160;&#160;</string>
