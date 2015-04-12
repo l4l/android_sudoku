@@ -1,4 +1,4 @@
-package org.sudoku.activity;
+package org.awesome_sudoku.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,13 +11,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Toast;
-import org.sudoku.R;
-import org.sudoku.adapter.CellsAdapter;
-import org.sudoku.io.FileReader;
-import org.sudoku.io.FileWriter;
-import org.sudoku.model.CellMask;
-import org.sudoku.model.Game;
-import org.sudoku.io.RecordTable;
+import org.awesome_sudoku.R;
+import org.awesome_sudoku.adapter.CellsAdapter;
+import org.awesome_sudoku.io.FileReader;
+import org.awesome_sudoku.io.FileWriter;
+import org.awesome_sudoku.model.CellMask;
+import org.awesome_sudoku.model.Game;
+import org.awesome_sudoku.io.RecordTable;
 
 import java.io.IOException;
 

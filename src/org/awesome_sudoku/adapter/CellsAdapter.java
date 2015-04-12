@@ -1,4 +1,4 @@
-package org.sudoku.adapter;
+package org.awesome_sudoku.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -10,14 +10,14 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import android.widget.Toast;
-import org.sudoku.activity.GameActivity;
-import org.sudoku.model.Game;
-import org.sudoku.activity.KeypadDialog;
-import org.sudoku.R;
+import org.awesome_sudoku.activity.GameActivity;
+import org.awesome_sudoku.model.Game;
+import org.awesome_sudoku.activity.KeypadDialog;
+import org.awesome_sudoku.R;
 
 
-import static org.sudoku.activity.GameActivity.LINE_SIZE;
-import static org.sudoku.activity.GameActivity.LINE_SIZE_S;
+import static org.awesome_sudoku.activity.GameActivity.LINE_SIZE;
+import static org.awesome_sudoku.activity.GameActivity.LINE_SIZE_S;
 
 /**
  * Created by kitsu.

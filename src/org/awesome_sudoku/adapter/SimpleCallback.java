@@ -1,4 +1,4 @@
-package org.sudoku.adapter;
+package org.awesome_sudoku.adapter;
 
 /**
  * Created by kitsu.

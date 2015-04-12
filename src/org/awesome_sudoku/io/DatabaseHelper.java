@@ -1,4 +1,4 @@
-package org.sudoku.io;
+package org.awesome_sudoku.io;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

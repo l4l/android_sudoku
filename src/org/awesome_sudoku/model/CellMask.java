@@ -1,4 +1,4 @@
-package org.sudoku.model;
+package org.awesome_sudoku.model;
 
 import java.io.Serializable;
 

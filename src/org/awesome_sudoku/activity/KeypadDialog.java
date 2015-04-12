@@ -1,4 +1,4 @@
-package org.sudoku.activity;
+package org.awesome_sudoku.activity;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -10,10 +10,10 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
-import org.sudoku.R;
-import org.sudoku.adapter.SimpleCallback;
+import org.awesome_sudoku.R;
+import org.awesome_sudoku.adapter.SimpleCallback;
 
-import static org.sudoku.activity.GameActivity.LINE_SIZE;
+import static org.awesome_sudoku.activity.GameActivity.LINE_SIZE;
 
 /**
  * Created by kitsu.

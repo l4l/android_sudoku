@@ -1,4 +1,4 @@
-package org.sudoku.activity;
+package org.awesome_sudoku.activity;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -7,8 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import android.widget.Button;
-import org.sudoku.R;
-import org.sudoku.io.FileReader;
+import org.awesome_sudoku.R;
+import org.awesome_sudoku.io.FileReader;
 
 /**
  * Created by kitsu.

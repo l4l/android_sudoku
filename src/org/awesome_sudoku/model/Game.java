@@ -1,12 +1,12 @@
-package org.sudoku.model;
+package org.awesome_sudoku.model;
 
 import java.util.Random;
 import java.util.Vector;
 
 import android.util.SparseIntArray;
 
-import static org.sudoku.activity.GameActivity.LINE_SIZE;
-import static org.sudoku.activity.GameActivity.LINE_SIZE_S;
+import static org.awesome_sudoku.activity.GameActivity.LINE_SIZE;
+import static org.awesome_sudoku.activity.GameActivity.LINE_SIZE_S;
 
 /**
  * Created by kitsu.

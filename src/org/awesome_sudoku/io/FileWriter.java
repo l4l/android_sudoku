@@ -1,4 +1,4 @@
-package org.sudoku.io;
+package org.awesome_sudoku.io;
 
 import java.io.File;
 import java.io.FileOutputStream;

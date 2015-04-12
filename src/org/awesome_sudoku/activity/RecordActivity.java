@@ -1,4 +1,4 @@
-package org.sudoku.activity;
+package org.awesome_sudoku.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import org.sudoku.R;
-import org.sudoku.io.RecordTable;
+import org.awesome_sudoku.R;
+import org.awesome_sudoku.io.RecordTable;
 
 /**
  * Created by kitsu.

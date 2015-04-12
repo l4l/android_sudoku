@@ -6,9 +6,9 @@
     <string name="authorBtn">Об авторе</string>
     <string name="recordsBtn">Рекорды</string>
     <string name="checkBtn">Проверить</string>
-    <string name="resetBtn">Отчистить</string>
+    <string name="resetBtn">Очистить</string>
     <string name="generateBtn">Заново</string>
-    <string name="clearCellBtn">Отчистить</string>
+    <string name="clearCellBtn">Очистить</string>
 
     <!-- Author fields -->
     <string name="author">Об авторе</string>
